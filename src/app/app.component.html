@@ -466,14 +466,35 @@
               abdalrhmanmahmoud27&#64;gmail.com
             </span>
           </a>
-          <div class="flex items-center gap-4 text-slate-300 group">
+          <a
+            href="tel:+201211999580"
+            class="flex items-center gap-4 text-slate-300 hover:text-blue-400 transition-all duration-300 group"
+          >
             <div
               class="p-2 bg-slate-800 rounded-lg group-hover:bg-blue-500/10 transition-colors"
             >
               <lucide-icon [img]="Phone" [size]="20"></lucide-icon>
             </div>
-            +20 121 199 9580
-          </div>
+            <span class="group-hover:translate-x-1 transition-transform">
+              +20 121 199 9580
+            </span>
+          </a>
+          <a
+            href="https://wa.me/201211999580"
+            target="_blank"
+            rel="noopener"
+            class="flex items-center gap-4 text-slate-300 hover:text-blue-400 transition-all duration-300 group"
+          >
+            <div
+              class="p-2 bg-slate-800 rounded-lg group-hover:bg-blue-500/10 transition-colors"
+            >
+              <!-- WhatsApp SVG icon as image -->
+              <img src="/whatsapp.svg" width="20" height="20" alt="WhatsApp" />
+            </div>
+            <span class="group-hover:translate-x-1 transition-transform">
+              WhatsApp
+            </span>
+          </a>
         </div>
         <button
           (click)="sendEmail()"
