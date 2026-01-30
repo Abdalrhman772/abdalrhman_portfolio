@@ -1,6 +1,15 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+  query,
+  stagger,
+} from '@angular/animations';
+import {
   LucideAngularModule,
   Github,
   Linkedin,
@@ -26,12 +35,19 @@ interface NavLink {
   href: string;
 }
 
+interface Position {
+  role: string;
+  date: string;
+  description: string;
+}
+
 interface Experience {
   title: string;
   company: string;
   location: string;
   period: string;
-  description: string;
+  description?: string;
+  positions?: Position[];
   tags: string[];
 }
 
@@ -47,6 +63,84 @@ interface SkillBlock {
   imports: [CommonModule, LucideAngularModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  animations: [
+    // Fade in animation
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('800ms ease-out', style({ opacity: 1 })),
+      ]),
+    ]),
+
+    // Slide down animation for mobile menu
+    trigger('slideDown', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate(
+          '300ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+      transition(':leave', [
+        animate(
+          '200ms ease-in',
+          style({ opacity: 0, transform: 'translateY(-10px)' })
+        ),
+      ]),
+    ]),
+
+    // Fade in up with delay
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(30px)' }),
+        animate(
+          '{{delay}}ms 600ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+    ]),
+
+    // Stagger animation for hero content
+    trigger('staggerFadeIn', [
+      transition(':enter', [
+        query(
+          ':self',
+          [
+            style({ opacity: 0, transform: 'translateY(30px)' }),
+            stagger(100, [
+              animate(
+                '800ms ease-out',
+                style({ opacity: 1, transform: 'translateY(0)' })
+              ),
+            ]),
+          ],
+          { optional: true }
+        ),
+      ]),
+    ]),
+
+    // Slide in from left
+    trigger('slideInLeft', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(-50px)' }),
+        animate(
+          '800ms 300ms ease-out',
+          style({ opacity: 1, transform: 'translateX(0)' })
+        ),
+      ]),
+    ]),
+
+    // Slide in from right
+    trigger('slideInRight', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(50px)' }),
+        animate(
+          '800ms 300ms ease-out',
+          style({ opacity: 1, transform: 'translateX(0)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class AppComponent implements OnInit {
   // Icon exports for template
@@ -66,10 +160,11 @@ export class AppComponent implements OnInit {
   readonly ChevronRight = ChevronRight;
   readonly Menu = Menu;
   readonly X = X;
+  readonly Briefcase = Briefcase;
 
   isMenuOpen = false;
-  activeTab = 'all';
   scrolled = false;
+  activeSection = '';
 
   navLinks: NavLink[] = [
     { name: 'About', href: '#about' },
@@ -87,8 +182,8 @@ export class AppComponent implements OnInit {
       'Lazy Loading',
     ],
     ui: ['Tailwind CSS', 'Bootstrap', 'Angular Material', 'PrimeNG'],
-    geo: ['Leaflet', 'Google Maps API', 'Interactive Dashboards'],
-    tools: ['Git', 'Keycloak', 'Jenkins', 'OOP', 'Bitbucket'],
+    geo: ['Leaflet', 'Google Maps API', 'Interactive Dashboards', 'Data Viz'],
+    tools: ['Git', 'Keycloak', 'Jenkins', 'Bitbucket', 'OOP'],
   };
 
   skillBlocks: SkillBlock[] = [
@@ -100,40 +195,43 @@ export class AppComponent implements OnInit {
 
   experience: Experience[] = [
     {
-      title: 'Mid-level Frontend Developer',
+      title: 'Frontend Developer',
       company: 'Eden Technologies',
       location: 'Cairo, Egypt (Hybrid)',
-      period: '06/2025 – Present',
-      description:
-        'Led architecture and development of Angular applications. Defined scalable frontend structures and guided technical direction.',
-      tags: ['Angular', 'RxJS', 'Lead', 'Architecture'],
+      period: 'Apr 2024 – Present',
+      positions: [
+        {
+          role: 'Mid-level Frontend Developer',
+          date: 'Jun 2025 – Present',
+          description:
+            'Leading architecture and development of Angular applications. Defining scalable frontend structures and guiding technical direction for enterprise solutions.',
+        },
+        {
+          role: 'Frontend Developer',
+          date: 'Apr 2024 – Jun 2025',
+          description:
+            'Delivered enterprise-level ticketing and customer care systems. Integrated statistical data visualization with Google Maps and Leaflet for real-time monitoring.',
+        },
+      ],
+      tags: ['Angular', 'Enterprise', 'Lead', 'Maps', 'Dashboards'],
     },
     {
       title: 'Part-time Frontend Developer',
       company: 'Astrik.ai',
       location: 'Remote',
-      period: '07/2025 – Present',
+      period: 'Jul 2025 – Present',
       description:
-        'Building optimized chat screens, improving SEO/Accessibility, and implementing RBAC for AI-driven platforms.',
-      tags: ['AI', 'Accessibility', 'Remote', 'RBAC'],
-    },
-    {
-      title: 'Frontend Developer',
-      company: 'Eden Technologies',
-      location: 'Cairo, Egypt',
-      period: '04/2024 – 06/2025',
-      description:
-        'Delivered enterprise-level ticketing and customer care systems. Integrated statistical data visualization with Google Maps and Leaflet.',
-      tags: ['Enterprise', 'Dashboards', 'Maps'],
+        'Building optimized chat interfaces for AI-driven platforms. Improving SEO/Accessibility metrics and implementing RBAC (Role-Based Access Control) for secure, scalable user management.',
+      tags: ['AI', 'Accessibility', 'Remote', 'RBAC', 'Chat UI'],
     },
     {
       title: 'Frontend Developer Intern',
       company: 'TensorGraph',
       location: 'Internship',
-      period: '06/2023 – 08/2023',
+      period: 'Jun 2023 – Aug 2023',
       description:
-        'Contributed to Fluido.ai using Angular and Tailwind. Mastered HTTP interceptors and route guards.',
-      tags: ['Learning', 'Fluido.ai', 'Clean Code'],
+        'Contributed to Fluido.ai using Angular and Tailwind CSS. Mastered HTTP interceptors, route guards, and clean code principles in a professional development environment.',
+      tags: ['Learning', 'Fluido.ai', 'Clean Code', 'Tailwind'],
     },
   ];
 
@@ -144,11 +242,29 @@ export class AppComponent implements OnInit {
     { label: 'Location', val: 'Hybrid/Remote' },
   ];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.updateActiveSection();
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     this.scrolled = window.scrollY > 50;
+    this.updateActiveSection();
+  }
+
+  private updateActiveSection(): void {
+    const sections = ['about', 'experience', 'skills', 'education'];
+    const current = sections.find((section) => {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 150 && rect.bottom >= 150;
+      }
+      return false;
+    });
+    if (current) {
+      this.activeSection = current;
+    }
   }
 
   toggleMenu(): void {
