@@ -2,549 +2,572 @@
   class="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-blue-500/30"
   [@fadeIn]
 >
-  <!-- Navigation -->
-  <nav
-    [class]="
-      'fixed w-full z-50 transition-all duration-500 ' +
-      (scrolled
-        ? 'bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/50 py-3 shadow-2xl shadow-black/20'
-        : 'bg-transparent py-5')
-    "
-  >
-    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-      <div class="flex items-center gap-2 group cursor-pointer">
-        <div
-          class="w-10 h-10 bg-linear-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-blue-500/20"
-        >
-          AM
+  <!-- Stars Background -->
+  <div class="stars-wrapper">
+    <div class="stars-1"></div>
+    <div class="stars-2"></div>
+    <div class="stars-3"></div>
+  </div>
+
+  <div class="relative z-10">
+    <!-- Navigation -->
+    <nav
+      [class]="
+        'fixed w-full z-50 transition-all duration-500 ' +
+        (scrolled
+          ? 'bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/50 py-3 shadow-2xl shadow-black/20'
+          : 'bg-transparent border-slate-800/50 py-5')
+      "
+    >
+      <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <div class="flex items-center gap-2 group cursor-pointer">
+          <div
+            class="w-10 h-10 bg-linear-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-blue-500/20"
+          >
+            AM
+          </div>
+          <span
+            class="text-xl font-bold tracking-tight hidden sm:block bg-linear-to-r from-white to-slate-300 bg-clip-text text-transparent"
+          >
+            Abdalrhman Mahmoud
+          </span>
         </div>
-        <span
-          class="text-xl font-bold tracking-tight hidden sm:block bg-linear-to-r from-white to-slate-300 bg-clip-text text-transparent"
+
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex gap-8 items-center">
+          <a
+            *ngFor="let link of navLinks"
+            [href]="link.href"
+            [class]="
+              'text-sm font-medium transition-all duration-300 relative group ' +
+              (activeSection === link.href.slice(1)
+                ? 'text-blue-400'
+                : 'text-slate-300 hover:text-blue-400')
+            "
+          >
+            {{ link.name }}
+            <span
+              [class]="
+                'absolute -bottom-1 left-0 h-0.5 bg-blue-500 transition-all duration-300 ' +
+                (activeSection === link.href.slice(1)
+                  ? 'w-full'
+                  : 'w-0 group-hover:w-full')
+              "
+            ></span>
+          </a>
+          <a
+            href="mailto:abdalrhmanmahmoud27@gmail.com"
+            class="px-5 py-2 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105"
+          >
+            Hire Me
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button
+          class="md:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors"
+          (click)="toggleMenu()"
         >
-          Abdalrhman Mahmoud
-        </span>
+          <lucide-icon *ngIf="isMenuOpen" [img]="X" [size]="24"></lucide-icon>
+          <lucide-icon
+            *ngIf="!isMenuOpen"
+            [img]="Menu"
+            [size]="24"
+          ></lucide-icon>
+        </button>
       </div>
 
-      <!-- Desktop Nav -->
-      <div class="hidden md:flex gap-8 items-center">
+      <!-- Mobile Nav -->
+      <div
+        *ngIf="isMenuOpen"
+        [@slideDown]
+        class="md:hidden absolute top-full left-0 w-full bg-slate-900/98 backdrop-blur-xl border-b border-slate-800 p-6 flex flex-col gap-4"
+      >
         <a
           *ngFor="let link of navLinks"
           [href]="link.href"
-          [class]="
-            'text-sm font-medium transition-all duration-300 relative group ' +
-            (activeSection === link.href.slice(1)
-              ? 'text-blue-400'
-              : 'text-slate-300 hover:text-blue-400')
-          "
+          (click)="closeMenu()"
+          class="text-lg font-medium hover:text-blue-400 transition-colors py-2"
         >
           {{ link.name }}
-          <span
-            [class]="
-              'absolute -bottom-1 left-0 h-0.5 bg-blue-500 transition-all duration-300 ' +
-              (activeSection === link.href.slice(1)
-                ? 'w-full'
-                : 'w-0 group-hover:w-full')
-            "
-          ></span>
-        </a>
-        <a
-          href="mailto:abdalrhmanmahmoud27@gmail.com"
-          class="px-5 py-2 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105"
-        >
-          Hire Me
         </a>
       </div>
+    </nav>
 
-      <!-- Mobile Menu Toggle -->
-      <button
-        class="md:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors"
-        (click)="toggleMenu()"
-      >
-        <lucide-icon *ngIf="isMenuOpen" [img]="X" [size]="24"></lucide-icon>
-        <lucide-icon *ngIf="!isMenuOpen" [img]="Menu" [size]="24"></lucide-icon>
-      </button>
-    </div>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+      <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-96 bg-blue-600/10 blur-[120px] rounded-full -z-10 animate-pulse"
+      ></div>
+      <div
+        class="absolute top-20 right-10 w-72 h-72 bg-indigo-600/5 blur-[100px] rounded-full -z-10"
+      ></div>
 
-    <!-- Mobile Nav -->
-    <div
-      *ngIf="isMenuOpen"
-      [@slideDown]
-      class="md:hidden absolute top-full left-0 w-full bg-slate-900/98 backdrop-blur-xl border-b border-slate-800 p-6 flex flex-col gap-4"
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-3xl" [@staggerFadeIn]>
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6"
+          >
+            <span class="relative flex h-2 w-2">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+              ></span>
+              <span
+                class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"
+              ></span>
+            </span>
+            Available for New Projects
+          </div>
+
+          <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
+            <span
+              class="bg-linear-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent"
+            >
+              Frontend Developer
+            </span>
+            <br />
+            <span
+              class="bg-linear-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent italic"
+            >
+              Expert in Angular.
+            </span>
+          </h1>
+
+          <p
+            class="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl"
+          >
+            Proactive engineer specialized in building responsive, scalable, and
+            high-performance web applications with clean architecture and modern
+            tools like Tailwind and RxJS.
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <div class="flex gap-4">
+              <a
+                href="https://github.com/Abdalrhman772"
+                target="_blank"
+                class="p-3 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800 hover:border-slate-700 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/10"
+              >
+                <lucide-icon [img]="Github" [size]="24"></lucide-icon>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/abdalrhman72/"
+                target="_blank"
+                class="p-3 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800 hover:border-slate-700 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/10"
+              >
+                <lucide-icon [img]="Linkedin" [size]="24"></lucide-icon>
+              </a>
+            </div>
+            <div class="h-12 w-px bg-slate-800 hidden sm:block mx-2"></div>
+            <div class="flex gap-3 items-center text-slate-400 text-sm">
+              <lucide-icon
+                [img]="MapPin"
+                [size]="18"
+                class="text-blue-500"
+              ></lucide-icon>
+              Located in Alexandria, Available Worldwide
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section
+      class="py-12 border-y border-slate-900/50 bg-slate-950/50 backdrop-blur"
     >
-      <a
-        *ngFor="let link of navLinks"
-        [href]="link.href"
-        (click)="closeMenu()"
-        class="text-lg font-medium hover:text-blue-400 transition-colors py-2"
-      >
-        {{ link.name }}
-      </a>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
-    <div
-      class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-96 bg-blue-600/10 blur-[120px] rounded-full -z-10 animate-pulse"
-    ></div>
-    <div
-      class="absolute top-20 right-10 w-72 h-72 bg-indigo-600/5 blur-[100px] rounded-full -z-10"
-    ></div>
-
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="max-w-3xl" [@staggerFadeIn]>
+      <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
         <div
-          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6"
+          *ngFor="let item of stats; let i = index"
+          class="text-center md:text-left group cursor-default"
+          [@fadeInUp]="{ value: '', params: { delay: i * 100 } }"
         >
-          <span class="relative flex h-2 w-2">
-            <span
-              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
-            ></span>
-            <span
-              class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"
-            ></span>
-          </span>
-          Available for New Projects
+          <p
+            class="text-slate-500 text-xs uppercase tracking-widest mb-1 group-hover:text-blue-500 transition-colors"
+          >
+            {{ item.label }}
+          </p>
+          <p
+            class="text-xl font-bold text-slate-200 group-hover:text-blue-400 transition-colors"
+          >
+            {{ item.val }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 max-w-7xl mx-auto px-6 scroll-mt-20">
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div class="relative group" [@slideInLeft]>
+          <div
+            class="absolute -inset-4 bg-linear-to-tr from-blue-600 to-indigo-600 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"
+          ></div>
+          <div
+            class="relative aspect-square rounded-3xl overflow-hidden border border-slate-800 bg-linear-to-br from-slate-900 to-slate-950 p-8 flex items-center justify-center group-hover:border-blue-500/50 transition-all duration-500"
+          >
+            <div class="text-center">
+              <lucide-icon
+                [img]="Code"
+                [size]="80"
+                class="text-blue-500 mx-auto mb-6 group-hover:scale-110 transition-transform duration-500"
+              ></lucide-icon>
+              <h3 class="text-2xl font-bold mb-4">The Technical Edge</h3>
+              <p class="text-slate-400">
+                Specializing in modular architecture, interactive maps
+                (Leaflet/Google Maps), and high-performance UI components.
+              </p>
+            </div>
+          </div>
         </div>
 
-        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
-          <span
-            class="bg-linear-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent"
+        <div [@slideInRight]>
+          <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+            <lucide-icon [img]="User" class="text-blue-500"></lucide-icon>
+            Professional Summary
+          </h2>
+          <p
+            class="text-lg text-slate-400 leading-relaxed mb-6 italic border-l-2 border-blue-500/50 pl-4"
           >
-            Frontend Developer
-          </span>
-          <br />
-          <span
-            class="bg-linear-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent italic"
-          >
-            Expert in Angular.
-          </span>
-        </h1>
-
-        <p
-          class="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl"
-        >
-          Proactive engineer specialized in building responsive, scalable, and
-          high-performance web applications with clean architecture and modern
-          tools like Tailwind and RxJS.
-        </p>
-
-        <div class="flex flex-wrap gap-4">
-          <div class="flex gap-4">
-            <a
-              href="https://github.com/Abdalrhman772"
-              target="_blank"
-              class="p-3 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800 hover:border-slate-700 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/10"
+            "Proactive Frontend Developer specialized in Angular, with strong
+            experience in building responsive, scalable, and high-performance
+            web applications."
+          </p>
+          <div class="space-y-4">
+            <div
+              class="flex gap-4 items-start group hover:translate-x-2 transition-transform duration-300"
             >
-              <lucide-icon [img]="Github" [size]="24"></lucide-icon>
-            </a>
-            <a
-              href="https://www.linkedin.com/in/abdalrhman72/"
-              target="_blank"
-              class="p-3 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800 hover:border-slate-700 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/10"
+              <div
+                class="mt-1 p-2 bg-blue-500/10 rounded-lg text-blue-500 group-hover:bg-blue-500/20 transition-colors"
+              >
+                <lucide-icon [img]="Layers" [size]="20"></lucide-icon>
+              </div>
+              <div>
+                <h4
+                  class="font-semibold group-hover:text-blue-400 transition-colors"
+                >
+                  Enterprise Systems
+                </h4>
+                <p class="text-sm text-slate-500">
+                  Experienced in Ticketing systems, Customer Care platforms, and
+                  complex Dashboards.
+                </p>
+              </div>
+            </div>
+            <div
+              class="flex gap-4 items-start group hover:translate-x-2 transition-transform duration-300"
             >
-              <lucide-icon [img]="Linkedin" [size]="24"></lucide-icon>
-            </a>
+              <div
+                class="mt-1 p-2 bg-blue-500/10 rounded-lg text-blue-500 group-hover:bg-blue-500/20 transition-colors"
+              >
+                <lucide-icon [img]="Globe" [size]="20"></lucide-icon>
+              </div>
+              <div>
+                <h4
+                  class="font-semibold group-hover:text-blue-400 transition-colors"
+                >
+                  Geospatial Specialist
+                </h4>
+                <p class="text-sm text-slate-500">
+                  Expertise in integrating Leaflet and Google Maps for
+                  data-driven map visualization.
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="h-12 w-px bg-slate-800 hidden sm:block mx-2"></div>
-          <div class="flex gap-3 items-center text-slate-400 text-sm">
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-24 bg-slate-900/30 scroll-mt-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-end mb-12">
+          <div>
+            <h2 class="text-3xl font-bold mb-2 flex items-center gap-3">
+              <lucide-icon
+                [img]="Briefcase"
+                class="text-blue-500"
+              ></lucide-icon>
+              Work Experience
+            </h2>
+            <p class="text-slate-500">
+              My professional journey in the frontend world.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div
+            *ngFor="let exp of experience; let i = index"
+            class="group relative p-8 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-blue-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/5"
+            [@fadeInUp]="{ value: '', params: { delay: i * 150 } }"
+          >
+            <div
+              class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4"
+            >
+              <div>
+                <h3
+                  class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors"
+                >
+                  {{ exp.title }}
+                </h3>
+                <p class="text-blue-500 font-medium">
+                  {{ exp.company }} <span class="text-slate-600 mx-2">•</span>
+                  <span class="text-slate-500">{{ exp.location }}</span>
+                </p>
+              </div>
+              <div
+                class="text-sm font-mono text-slate-500 bg-slate-950 px-4 py-1 rounded-full border border-slate-800 self-start md:self-center"
+              >
+                {{ exp.period }}
+              </div>
+            </div>
+
+            <!-- For positions array (Eden Technologies) -->
+            <div *ngIf="exp.positions" class="space-y-4 mb-6">
+              <div
+                *ngFor="let pos of exp.positions"
+                class="border-l-2 border-blue-500/30 pl-4"
+              >
+                <div class="flex items-center gap-2 mb-2">
+                  <h4 class="font-semibold text-blue-400">{{ pos.role }}</h4>
+                  <span class="text-sm text-slate-500">• {{ pos.date }}</span>
+                </div>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                  {{ pos.description }}
+                </p>
+              </div>
+            </div>
+
+            <!-- For simple description -->
+            <p
+              *ngIf="!exp.positions"
+              class="text-slate-400 mb-6 max-w-3xl leading-relaxed"
+            >
+              {{ exp.description }}
+            </p>
+
+            <div class="flex flex-wrap gap-2">
+              <span
+                *ngFor="let tag of exp.tags"
+                class="text-xs uppercase tracking-wider font-bold px-3 py-1 rounded-full bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-blue-500/50 hover:text-blue-400 transition-all duration-300"
+              >
+                {{ tag }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 max-w-7xl mx-auto px-6 scroll-mt-20">
+      <h2 class="text-3xl font-bold mb-12 text-center">
+        <span
+          class="bg-linear-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent"
+        >
+          Technical Arsenal
+        </span>
+      </h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div
+          *ngFor="let block of skillBlocks; let i = index"
+          class="p-6 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-blue-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/10 group"
+          [@fadeInUp]="{ value: '', params: { delay: i * 100 } }"
+        >
+          <div
+            class="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-300"
+          >
             <lucide-icon
-              [img]="MapPin"
-              [size]="18"
+              [img]="getIconForSkillBlock(block.icon)"
+              [size]="24"
+            ></lucide-icon>
+          </div>
+          <h3
+            class="text-lg font-bold mb-4 group-hover:text-blue-400 transition-colors"
+          >
+            {{ block.title }}
+          </h3>
+          <ul class="space-y-2">
+            <li
+              *ngFor="let item of block.items"
+              class="flex items-center gap-2 text-slate-400 text-sm hover:text-slate-300 transition-colors"
+            >
+              <lucide-icon
+                [img]="ChevronRight"
+                [size]="14"
+                class="text-blue-500 shrink-0"
+              ></lucide-icon>
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education & Contact -->
+    <section id="education" class="py-24 bg-slate-900/20 scroll-mt-20">
+      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
+        <div [@slideInLeft]>
+          <h2 class="text-3xl font-bold mb-8 flex items-center gap-3">
+            <lucide-icon
+              [img]="GraduationCap"
               class="text-blue-500"
             ></lucide-icon>
-            Alexandria, Egypt
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats -->
-  <section
-    class="py-12 border-y border-slate-900/50 bg-slate-950/50 backdrop-blur"
-  >
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-      <div
-        *ngFor="let item of stats; let i = index"
-        class="text-center md:text-left group cursor-default"
-        [@fadeInUp]="{ value: '', params: { delay: i * 100 } }"
-      >
-        <p
-          class="text-slate-500 text-xs uppercase tracking-widest mb-1 group-hover:text-blue-500 transition-colors"
-        >
-          {{ item.label }}
-        </p>
-        <p
-          class="text-xl font-bold text-slate-200 group-hover:text-blue-400 transition-colors"
-        >
-          {{ item.val }}
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="py-24 max-w-7xl mx-auto px-6 scroll-mt-20">
-    <div class="grid md:grid-cols-2 gap-16 items-center">
-      <div class="relative group" [@slideInLeft]>
-        <div
-          class="absolute -inset-4 bg-linear-to-tr from-blue-600 to-indigo-600 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"
-        ></div>
-        <div
-          class="relative aspect-square rounded-3xl overflow-hidden border border-slate-800 bg-linear-to-br from-slate-900 to-slate-950 p-8 flex items-center justify-center group-hover:border-blue-500/50 transition-all duration-500"
-        >
-          <div class="text-center">
-            <lucide-icon
-              [img]="Code"
-              [size]="80"
-              class="text-blue-500 mx-auto mb-6 group-hover:scale-110 transition-transform duration-500"
-            ></lucide-icon>
-            <h3 class="text-2xl font-bold mb-4">The Technical Edge</h3>
-            <p class="text-slate-400">
-              Specializing in modular architecture, interactive maps
-              (Leaflet/Google Maps), and high-performance UI components.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div [@slideInRight]>
-        <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
-          <lucide-icon [img]="User" class="text-blue-500"></lucide-icon>
-          Professional Summary
-        </h2>
-        <p
-          class="text-lg text-slate-400 leading-relaxed mb-6 italic border-l-2 border-blue-500/50 pl-4"
-        >
-          "Proactive Frontend Developer specialized in Angular, with strong
-          experience in building responsive, scalable, and high-performance web
-          applications."
-        </p>
-        <div class="space-y-4">
-          <div
-            class="flex gap-4 items-start group hover:translate-x-2 transition-transform duration-300"
-          >
-            <div
-              class="mt-1 p-2 bg-blue-500/10 rounded-lg text-blue-500 group-hover:bg-blue-500/20 transition-colors"
-            >
-              <lucide-icon [img]="Layers" [size]="20"></lucide-icon>
-            </div>
-            <div>
-              <h4
-                class="font-semibold group-hover:text-blue-400 transition-colors"
-              >
-                Enterprise Systems
-              </h4>
-              <p class="text-sm text-slate-500">
-                Experienced in Ticketing systems, Customer Care platforms, and
-                complex Dashboards.
-              </p>
-            </div>
-          </div>
-          <div
-            class="flex gap-4 items-start group hover:translate-x-2 transition-transform duration-300"
-          >
-            <div
-              class="mt-1 p-2 bg-blue-500/10 rounded-lg text-blue-500 group-hover:bg-blue-500/20 transition-colors"
-            >
-              <lucide-icon [img]="Globe" [size]="20"></lucide-icon>
-            </div>
-            <div>
-              <h4
-                class="font-semibold group-hover:text-blue-400 transition-colors"
-              >
-                Geospatial Specialist
-              </h4>
-              <p class="text-sm text-slate-500">
-                Expertise in integrating Leaflet and Google Maps for data-driven
-                map visualization.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Experience Section -->
-  <section id="experience" class="py-24 bg-slate-900/30 scroll-mt-20">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="flex justify-between items-end mb-12">
-        <div>
-          <h2 class="text-3xl font-bold mb-2 flex items-center gap-3">
-            <lucide-icon [img]="Briefcase" class="text-blue-500"></lucide-icon>
-            Work Experience
+            Education
           </h2>
-          <p class="text-slate-500">
-            My professional journey in the frontend world.
-          </p>
-        </div>
-      </div>
-
-      <div class="space-y-6">
-        <div
-          *ngFor="let exp of experience; let i = index"
-          class="group relative p-8 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-blue-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/5"
-          [@fadeInUp]="{ value: '', params: { delay: i * 150 } }"
-        >
-          <div
-            class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4"
-          >
-            <div>
+          <div class="space-y-8">
+            <div
+              class="border-l-2 border-blue-500/30 pl-6 relative group hover:border-blue-500 transition-colors"
+            >
+              <div
+                class="absolute w-4 h-4 bg-blue-500 rounded-full -left-2.5 top-0 border-4 border-slate-950 group-hover:scale-125 transition-transform"
+              ></div>
               <h3
-                class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors"
+                class="font-bold text-lg group-hover:text-blue-400 transition-colors"
               >
-                {{ exp.title }}
+                Full-Stack Web Development (PHP Track)
               </h3>
-              <p class="text-blue-500 font-medium">
-                {{ exp.company }} <span class="text-slate-600 mx-2">•</span>
-                <span class="text-slate-500">{{ exp.location }}</span>
+              <p class="text-blue-400 text-sm mb-2">
+                Information Technology Institute (ITI) | 2022 – 2023
+              </p>
+              <p class="text-sm text-slate-500">
+                E-commerce platforms, MEAN Stack, and specialized Angular
+                projects.
               </p>
             </div>
             <div
-              class="text-sm font-mono text-slate-500 bg-slate-950 px-4 py-1 rounded-full border border-slate-800 self-start md:self-center"
+              class="border-l-2 border-slate-800 pl-6 relative group hover:border-slate-600 transition-colors"
             >
-              {{ exp.period }}
-            </div>
-          </div>
-
-          <!-- For positions array (Eden Technologies) -->
-          <div *ngIf="exp.positions" class="space-y-4 mb-6">
-            <div
-              *ngFor="let pos of exp.positions"
-              class="border-l-2 border-blue-500/30 pl-4"
-            >
-              <div class="flex items-center gap-2 mb-2">
-                <h4 class="font-semibold text-blue-400">{{ pos.role }}</h4>
-                <span class="text-xs text-slate-600">• {{ pos.date }}</span>
-              </div>
-              <p class="text-slate-400 text-sm leading-relaxed">
-                {{ pos.description }}
+              <div
+                class="absolute w-4 h-4 bg-slate-800 rounded-full -left-2.5 top-0 border-4 border-slate-950 group-hover:bg-slate-600 transition-colors"
+              ></div>
+              <h3
+                class="font-bold text-lg group-hover:text-slate-300 transition-colors"
+              >
+                Bachelor of Commerce – MIS
+              </h3>
+              <p class="text-blue-400 text-sm mb-2">
+                Alexandria University | 2018 – 2022
+              </p>
+              <p class="text-sm text-slate-500">
+                System analysis, design, and business technology integration.
               </p>
             </div>
-          </div>
-
-          <!-- For simple description -->
-          <p
-            *ngIf="!exp.positions"
-            class="text-slate-400 mb-6 max-w-3xl leading-relaxed"
-          >
-            {{ exp.description }}
-          </p>
-
-          <div class="flex flex-wrap gap-2">
-            <span
-              *ngFor="let tag of exp.tags"
-              class="text-xs uppercase tracking-wider font-bold px-3 py-1 rounded-full bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-blue-500/50 hover:text-blue-400 transition-all duration-300"
-            >
-              {{ tag }}
-            </span>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="py-24 max-w-7xl mx-auto px-6 scroll-mt-20">
-    <h2 class="text-3xl font-bold mb-12 text-center">
-      <span
-        class="bg-linear-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent"
-      >
-        Technical Arsenal
-      </span>
-    </h2>
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div
-        *ngFor="let block of skillBlocks; let i = index"
-        class="p-6 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-blue-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/10 group"
-        [@fadeInUp]="{ value: '', params: { delay: i * 100 } }"
-      >
         <div
-          class="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-300"
+          class="bg-linear-to-br from-blue-600/10 via-indigo-600/5 to-transparent p-8 rounded-3xl border border-blue-500/20 self-center hover:border-blue-500/40 transition-all"
+          [@slideInRight]
         >
-          <lucide-icon
-            [img]="getIconForSkillBlock(block.icon)"
-            [size]="24"
-          ></lucide-icon>
-        </div>
-        <h3
-          class="text-lg font-bold mb-4 group-hover:text-blue-400 transition-colors"
-        >
-          {{ block.title }}
-        </h3>
-        <ul class="space-y-2">
-          <li
-            *ngFor="let item of block.items"
-            class="flex items-center gap-2 text-slate-400 text-sm hover:text-slate-300 transition-colors"
-          >
-            <lucide-icon
-              [img]="ChevronRight"
-              [size]="14"
-              class="text-blue-500 shrink-0"
-            ></lucide-icon>
-            {{ item }}
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Education & Contact -->
-  <section id="education" class="py-24 bg-slate-900/20 scroll-mt-20">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
-      <div [@slideInLeft]>
-        <h2 class="text-3xl font-bold mb-8 flex items-center gap-3">
-          <lucide-icon
-            [img]="GraduationCap"
-            class="text-blue-500"
-          ></lucide-icon>
-          Education
-        </h2>
-        <div class="space-y-8">
-          <div
-            class="border-l-2 border-blue-500/30 pl-6 relative group hover:border-blue-500 transition-colors"
-          >
-            <div
-              class="absolute w-4 h-4 bg-blue-500 rounded-full -left-2.5 top-0 border-4 border-slate-950 group-hover:scale-125 transition-transform"
-            ></div>
-            <h3
-              class="font-bold text-lg group-hover:text-blue-400 transition-colors"
+          <h3 class="text-2xl font-bold mb-6">
+            Let's build something scalable.
+          </h3>
+          <p class="text-slate-400 mb-8">
+            I am always open to discussing frontend architecture, Angular best
+            practices, or remote collaboration opportunities.
+          </p>
+          <div class="space-y-4">
+            <a
+              href="mailto:abdalrhmanmahmoud27@gmail.com"
+              class="flex items-center gap-4 text-slate-300 hover:text-blue-400 transition-all duration-300 group"
             >
-              Full-Stack Web Development (PHP Track)
-            </h3>
-            <p class="text-blue-400 text-sm mb-2">
-              Information Technology Institute (ITI) | 2022 – 2023
-            </p>
-            <p class="text-sm text-slate-500">
-              E-commerce platforms, MEAN Stack, and specialized Angular
-              projects.
-            </p>
-          </div>
-          <div
-            class="border-l-2 border-slate-800 pl-6 relative group hover:border-slate-600 transition-colors"
-          >
-            <div
-              class="absolute w-4 h-4 bg-slate-800 rounded-full -left-2.5 top-0 border-4 border-slate-950 group-hover:bg-slate-600 transition-colors"
-            ></div>
-            <h3
-              class="font-bold text-lg group-hover:text-slate-300 transition-colors"
+              <div
+                class="p-2 bg-slate-800 rounded-lg group-hover:bg-blue-500/10 transition-colors"
+              >
+                <lucide-icon [img]="Mail" [size]="20"></lucide-icon>
+              </div>
+              <span class="group-hover:translate-x-1 transition-transform">
+                abdalrhmanmahmoud27&#64;gmail.com
+              </span>
+            </a>
+            <a
+              href="tel:+201211999580"
+              class="flex items-center gap-4 text-slate-300 hover:text-blue-400 transition-all duration-300 group"
             >
-              Bachelor of Commerce – MIS
-            </h3>
-            <p class="text-blue-400 text-sm mb-2">
-              Alexandria University | 2018 – 2022
-            </p>
-            <p class="text-sm text-slate-500">
-              System analysis, design, and business technology integration.
-            </p>
+              <div
+                class="p-2 bg-slate-800 rounded-lg group-hover:bg-blue-500/10 transition-colors"
+              >
+                <lucide-icon [img]="Phone" [size]="20"></lucide-icon>
+              </div>
+              <span class="group-hover:translate-x-1 transition-transform">
+                +20 121 199 9580
+              </span>
+            </a>
+            <a
+              href="https://wa.me/201211999580"
+              target="_blank"
+              rel="noopener"
+              class="flex items-center gap-4 text-slate-300 hover:text-blue-400 transition-all duration-300 group"
+            >
+              <div
+                class="p-2 bg-slate-800 rounded-lg group-hover:bg-blue-500/10 transition-colors"
+              >
+                <!-- WhatsApp SVG icon as image -->
+                <img
+                  src="/whatsapp.svg"
+                  width="20"
+                  height="20"
+                  alt="WhatsApp"
+                />
+              </div>
+              <span class="group-hover:translate-x-1 transition-transform">
+                WhatsApp
+              </span>
+            </a>
           </div>
+          <button
+            (click)="sendEmail()"
+            class="mt-10 w-full py-4 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105"
+          >
+            Get In Touch
+            <lucide-icon [img]="ExternalLink" [size]="18"></lucide-icon>
+          </button>
         </div>
       </div>
+    </section>
 
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-900 bg-slate-950">
       <div
-        class="bg-linear-to-br from-blue-600/10 via-indigo-600/5 to-transparent p-8 rounded-3xl border border-blue-500/20 self-center hover:border-blue-500/40 transition-all"
-        [@slideInRight]
+        class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6"
       >
-        <h3 class="text-2xl font-bold mb-6">Let's build something scalable.</h3>
-        <p class="text-slate-400 mb-8">
-          I am always open to discussing frontend architecture, Angular best
-          practices, or remote collaboration opportunities.
-        </p>
-        <div class="space-y-4">
+        <div class="flex items-center gap-2">
+          <div
+            class="w-8 h-8 bg-linear-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white text-xs shadow-lg shadow-blue-500/20"
+          >
+            AM
+          </div>
+          <span class="text-sm font-semibold text-slate-500 italic">
+            Abdalrhman Mahmoud Portfolio 2026
+          </span>
+        </div>
+        <div class="flex gap-6">
+          <a
+            href="https://github.com/Abdalrhman772"
+            target="_blank"
+            class="text-slate-500 hover:text-white transition-all duration-300 hover:scale-110"
+          >
+            <lucide-icon [img]="Github" [size]="20"></lucide-icon>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/abdalrhman72/"
+            target="_blank"
+            class="text-slate-500 hover:text-white transition-all duration-300 hover:scale-110"
+          >
+            <lucide-icon [img]="Linkedin" [size]="20"></lucide-icon>
+          </a>
           <a
             href="mailto:abdalrhmanmahmoud27@gmail.com"
-            class="flex items-center gap-4 text-slate-300 hover:text-blue-400 transition-all duration-300 group"
+            class="text-slate-500 hover:text-white transition-all duration-300 hover:scale-110"
           >
-            <div
-              class="p-2 bg-slate-800 rounded-lg group-hover:bg-blue-500/10 transition-colors"
-            >
-              <lucide-icon [img]="Mail" [size]="20"></lucide-icon>
-            </div>
-            <span class="group-hover:translate-x-1 transition-transform">
-              abdalrhmanmahmoud27&#64;gmail.com
-            </span>
-          </a>
-          <a
-            href="tel:+201211999580"
-            class="flex items-center gap-4 text-slate-300 hover:text-blue-400 transition-all duration-300 group"
-          >
-            <div
-              class="p-2 bg-slate-800 rounded-lg group-hover:bg-blue-500/10 transition-colors"
-            >
-              <lucide-icon [img]="Phone" [size]="20"></lucide-icon>
-            </div>
-            <span class="group-hover:translate-x-1 transition-transform">
-              +20 121 199 9580
-            </span>
-          </a>
-          <a
-            href="https://wa.me/201211999580"
-            target="_blank"
-            rel="noopener"
-            class="flex items-center gap-4 text-slate-300 hover:text-blue-400 transition-all duration-300 group"
-          >
-            <div
-              class="p-2 bg-slate-800 rounded-lg group-hover:bg-blue-500/10 transition-colors"
-            >
-              <!-- WhatsApp SVG icon as image -->
-              <img src="/whatsapp.svg" width="20" height="20" alt="WhatsApp" />
-            </div>
-            <span class="group-hover:translate-x-1 transition-transform">
-              WhatsApp
-            </span>
+            <lucide-icon [img]="Mail" [size]="20"></lucide-icon>
           </a>
         </div>
-        <button
-          (click)="sendEmail()"
-          class="mt-10 w-full py-4 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105"
-        >
-          Get In Touch
-          <lucide-icon [img]="ExternalLink" [size]="18"></lucide-icon>
-        </button>
+        <p class="text-xs text-slate-600">Built with Angular & Tailwind CSS</p>
       </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="py-12 border-t border-slate-900 bg-slate-950">
-    <div
-      class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6"
-    >
-      <div class="flex items-center gap-2">
-        <div
-          class="w-8 h-8 bg-linear-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white text-xs shadow-lg shadow-blue-500/20"
-        >
-          AM
-        </div>
-        <span class="text-sm font-semibold text-slate-500 italic">
-          Frontend Portfolio 2025
-        </span>
-      </div>
-      <div class="flex gap-6">
-        <a
-          href="https://github.com/Abdalrhman772"
-          target="_blank"
-          class="text-slate-500 hover:text-white transition-all duration-300 hover:scale-110"
-        >
-          <lucide-icon [img]="Github" [size]="20"></lucide-icon>
-        </a>
-        <a
-          href="https://www.linkedin.com/in/abdalrhman72/"
-          target="_blank"
-          class="text-slate-500 hover:text-white transition-all duration-300 hover:scale-110"
-        >
-          <lucide-icon [img]="Linkedin" [size]="20"></lucide-icon>
-        </a>
-        <a
-          href="mailto:abdalrhmanmahmoud27@gmail.com"
-          class="text-slate-500 hover:text-white transition-all duration-300 hover:scale-110"
-        >
-          <lucide-icon [img]="Mail" [size]="20"></lucide-icon>
-        </a>
-      </div>
-      <p class="text-xs text-slate-600">Built with Angular & Tailwind CSS</p>
-    </div>
-  </footer>
+    </footer>
+  </div>
 </div>
